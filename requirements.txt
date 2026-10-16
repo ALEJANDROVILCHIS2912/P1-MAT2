@@ -1,0 +1,4 @@
+mpea_temperatura/
+├── app.py
+├── MPEA_dataset.xlsx      ← tu archivo Excel
+└── requirements.txt
