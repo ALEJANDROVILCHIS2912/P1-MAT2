@@ -65,11 +65,12 @@ st.divider()
 # =====================================================================
 # PESTAÑAS
 # =====================================================================
-tab_exploracion, tab_tendencias, tab_comparacion, tab_buscador = st.tabs([
+tab_exploracion, tab_tendencias, tab_comparacion, tab_buscador, tab_acerca = st.tabs([
     "Exploración inicial", 
     "Análisis general", 
     "Comparación de aleaciones",
-    "Buscador de datos"
+    "Buscador de datos",
+    "Acerca del proyecto"
 ])
 
 # =====================================================================
@@ -168,7 +169,6 @@ with tab_tendencias:
         st.subheader("Tabla de clasificación de tendencias")
         st.dataframe(tabla_tendencias.round(2), use_container_width=True)
         
-        # Botón para descargar (opcional, pero útil para la app)
         csv = tabla_tendencias.to_csv(index=False).encode('utf-8')
         st.download_button(
             "Descargar tabla en CSV",
@@ -200,7 +200,6 @@ with tab_comparacion:
         (datos_ref["PROPERTY: Type of test"] == "C")
     ].copy()
     
-    # --- Gráfica 1: YS vs Temperatura ---
     st.subheader("1. Influencia de la temperatura en el límite de fluencia")
     
     fig1 = px.line(
@@ -214,7 +213,6 @@ with tab_comparacion:
     fig1.update_layout(template="plotly_white")
     st.plotly_chart(fig1, use_container_width=True)
     
-    # --- Gráfica 2: Retención porcentual ---
     st.subheader("2. Retención del límite de fluencia con la temperatura")
     
     resultados_ret = []
@@ -238,7 +236,6 @@ with tab_comparacion:
         fig2.update_layout(template="plotly_white")
         st.plotly_chart(fig2, use_container_width=True)
         
-        # --- Tabla resumen ---
         st.subheader("3. Resumen de resistencia conservada")
         resumen = []
         for formula, grupo in comparacion.groupby("FORMULA"):
@@ -301,3 +298,30 @@ with tab_buscador:
             file_name="registros_filtrados.csv",
             mime="text/csv"
         )
+
+# =====================================================================
+# PESTAÑA 5: ACERCA DEL PROYECTO
+# =====================================================================
+with tab_acerca:
+    st.markdown("""
+    # Proyecto 1. Introducción al análisis de datos de materiales
+
+    **Materia:** Materiales II  
+    **Tema:** Influencia de la temperatura de ensayo en el límite de fluencia de aleaciones metálicas
+
+    ## 1. Pregunta de investigación
+
+    ¿Cómo influye la temperatura de ensayo en el límite de fluencia de las aleaciones metálicas?
+
+    ## 2. Objetivo general
+
+    Analizar la relación entre la temperatura de ensayo y el límite de fluencia de diferentes aleaciones metálicas mediante herramientas estadísticas y visualizaciones desarrolladas en Python, con el propósito de identificar tendencias y explicar su comportamiento desde el punto de vista de Ingeniería de Materiales.
+
+    ## 3. Metodología general
+
+    El proyecto se desarrollará a partir de la base de datos `MPEA_dataset.csv`, mediante una metodología que comprenderá la exploración inicial de los datos, identificación de valores faltantes, selección y preparación de registros, análisis estadístico, elaboración de visualizaciones e interpretación de resultados.
+
+    Para asegurar la congruencia en las observaciones se considerarán variables como: la composición química, el método de procesamiento, el tipo de ensayo y la referencia científica de los registros.
+
+    Finalmente, se discutirán las tendencias identificadas, las limitaciones del análisis y las conclusiones obtenidas.
+    """)
